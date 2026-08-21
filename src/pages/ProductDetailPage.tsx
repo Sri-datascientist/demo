@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingBag, Loader2, Plus, Minus, Check, ArrowLeft, Star } from 'lucide-react';
 import { api } from '../lib/api';
 import { useAuth } from '../contexts/AuthContext';
@@ -9,7 +9,9 @@ import type { Product, ProductReview } from '../types';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
+  const location = useLocation();
   const { user } = useAuth();
+
   const { items, addItem, updateItem, removeItem, refresh } = useCart();
   const { showCartToast, showToast } = useToast();
   const navigate = useNavigate();
@@ -196,10 +198,12 @@ export default function ProductDetailPage() {
             {!user ? (
               <Link
                 to="/login"
+                state={{ from: location.pathname }}
                 className="w-full block text-center rounded-full bg-[#2D5A27] text-white py-3.5 font-semibold hover:bg-[#23471f] active:scale-95 transition-all shadow-md"
               >
                 Login to Buy
               </Link>
+
             ) : product.stock_quantity === 0 ? (
               <button disabled className="w-full rounded-full bg-neutral-200 text-neutral-500 py-3.5 font-semibold cursor-not-allowed">
                 Out of Stock

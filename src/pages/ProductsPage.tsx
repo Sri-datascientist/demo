@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+
 import { PageHeader } from '../components/PageHeader';
 import { ArrowRight, ShoppingBag, Plus, Minus, Loader2, Check } from 'lucide-react';
 import { api } from '../lib/api';
@@ -124,7 +125,9 @@ const valueChain = [
 ];
 
 export default function ProductsPage() {
+  const location = useLocation();
   const { user } = useAuth();
+
   const { items, addItem, updateItem, removeItem } = useCart();
   const { showCartToast, showToast } = useToast();
   const [products, setProducts] = useState<Product[]>([]);
@@ -373,10 +376,12 @@ export default function ProductsPage() {
                     {!user ? (
                       <Link
                         to="/login"
+                        state={{ from: location.pathname + location.search }}
                         className="w-full block text-center rounded-full border-2 border-[#2D5A27] text-[#2D5A27] py-2.5 font-semibold hover:bg-[#2D5A27] hover:text-white transition-all active:scale-95"
                       >
                         Login to Buy
                       </Link>
+
                     ) : product.stock_quantity === 0 ? (
                       <button
                         disabled
