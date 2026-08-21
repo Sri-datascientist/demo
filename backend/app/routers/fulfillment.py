@@ -128,10 +128,12 @@ def assign_order_fulfillment(
     # Notify customer of assignment
     if old_status != order.status:
         try:
-            if order.user and order.user.email:
-                send_order_status_update_email(order, order.user.email)
+            target_email = (order.user and order.user.email) or order.user_email
+            if target_email:
+                send_order_status_update_email(order, target_email)
         except Exception as e:
             pass
+
 
     return _serialize_order(order)
 

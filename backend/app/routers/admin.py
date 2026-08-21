@@ -101,11 +101,13 @@ def admin_update_order_status(
     if old_status != order.status:
         try:
             from app.services.email_service import send_order_status_update_email
-            if order.user and order.user.email:
-                send_order_status_update_email(order, order.user.email)
+            target_email = (order.user and order.user.email) or order.user_email
+            if target_email:
+                send_order_status_update_email(order, target_email)
         except Exception as e:
             import logging
             logging.getLogger(__name__).error(f"Failed to send status update email: {e}")
+
 
     return _serialize_order(order)
 
