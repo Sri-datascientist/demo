@@ -1,0 +1,13 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+backend/.env
+backend/env/
+
+
+src/asset/images/Oyedesi.source.mp4

@@ -1,0 +1,29 @@
+# Virtual environments
+env/
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Secrets and local config
+.env
+.env.*
+!.env.example
+
+# Git and IDE
+.git
+.gitignore
+.idea
+.vscode
+
+# Local dev / tests (not needed in Lambda image)
+scripts/
+*.md
+Dockerfile*
+docker-compose*
+
+# OS
+.DS_Store
+Thumbs.db

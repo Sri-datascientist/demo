@@ -1,0 +1,6 @@
+{
+  "name": "Viktor Oddy Creative Studio",
+  "description": "The single-page landing page of Viktor Oddy's creative design studio featuring interactive showcases, pricing tiers, client testimonials, and bespoke design assets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
