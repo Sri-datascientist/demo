@@ -4,6 +4,8 @@ import { useAuth } from '../../contexts/AuthContext';
 import { Logo } from '../../components/Logo';
 import type { AccountType } from '../../types';
 
+import { Eye, EyeOff } from 'lucide-react';
+
 export default function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -13,8 +15,10 @@ export default function LoginPage() {
   const [accountType, setAccountType] = useState<AccountType>('customer');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     const type = new URLSearchParams(location.search).get('type');
@@ -95,14 +99,25 @@ export default function LoginPage() {
         </div>
         <div>
           <label className="page-label block mb-2">Password</label>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-xl border border-neutral-200 px-4 py-3.5 text-base"
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full rounded-xl border border-neutral-200 pl-4 pr-12 py-3.5 text-base"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors p-1"
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
         <button
           type="submit"
           disabled={loading}
