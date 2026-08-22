@@ -208,7 +208,11 @@ export function TestimonialCarousel() {
                       src={item.avatar}
                       alt={item.name}
                       referrerPolicy="no-referrer"
-                      className="w-12 h-12 rounded-full object-cover shadow-sm"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=120&q=80';
+                      }}
+                      className="w-12 h-12 rounded-full object-cover shadow-sm bg-neutral-100"
                     />
                     <div>
                       <div className="font-semibold text-sm text-[#0D212C]">{item.name}</div>

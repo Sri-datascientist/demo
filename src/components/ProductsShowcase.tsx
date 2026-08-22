@@ -101,7 +101,11 @@ export function ProductsShowcase() {
                     src={product.imageUrl}
                     alt={product.title}
                     referrerPolicy="no-referrer"
-                    className="rounded-2xl object-cover aspect-[4/5] w-[200px] sm:w-[240px] md:w-[280px] lg:w-[320px] shadow-lg"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80';
+                    }}
+                    className="rounded-2xl object-cover aspect-[4/5] w-[200px] sm:w-[240px] md:w-[280px] lg:w-[320px] shadow-lg bg-neutral-100"
                   />
                 </div>
               </div>
@@ -130,7 +134,11 @@ export function ProductsShowcase() {
                       src={activeProduct.imageUrl}
                       alt={activeProduct.title}
                       referrerPolicy="no-referrer"
-                      className="rounded-2xl object-cover aspect-[4/5] w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] shadow-xl ring-2 ring-[#689F38]/20 animate-fade-in-up"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80';
+                      }}
+                      className="rounded-2xl object-cover aspect-[4/5] w-[280px] sm:w-[320px] md:w-[360px] lg:w-[400px] shadow-xl ring-2 ring-[#689F38]/20 animate-fade-in-up bg-neutral-100"
                       style={{ animationDuration: '0.4s' }}
                     />
                   </div>
@@ -167,7 +175,11 @@ export function ProductsShowcase() {
                         src={product.imageUrl}
                         alt={product.title}
                         referrerPolicy="no-referrer"
-                        className="rounded-xl object-cover aspect-[4/5] w-[120px] sm:w-[140px] md:w-[170px] shadow-md"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80';
+                        }}
+                        className="rounded-xl object-cover aspect-[4/5] w-[120px] sm:w-[140px] md:w-[170px] shadow-md bg-neutral-100"
                       />
                     </div>
                   </div>

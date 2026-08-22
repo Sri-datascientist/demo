@@ -113,7 +113,11 @@ export default function CustomerOrdersPage() {
                         <img
                           src={item.product_image || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=120&q=80'}
                           alt={item.product_name}
-                          className="w-16 h-16 rounded-xl object-cover border"
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=120&q=80';
+                          }}
+                          className="w-16 h-16 rounded-xl object-cover border bg-neutral-100"
                           referrerPolicy="no-referrer"
                         />
                         <div>

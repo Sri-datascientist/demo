@@ -34,7 +34,7 @@ const valueChain: ValueChainItem[] = [
     description:
       'Creating world-class storage and warehousing solutions for our partners to manage distribution systems across India.',
     imageUrl:
-      'https://images.unsplash.com/photo-1566576721346-d4a3b3098d43?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1566576721346-d4a3b4b93488?auto=format&fit=crop&w=600&q=80',
   },
   {
     title: 'Marketing & Consumption',
@@ -82,11 +82,15 @@ function ValueChainRow({
             />
             <div className="relative p-1 rounded-full bg-gradient-to-br from-[#E8C547] via-[#D4AF37] to-[#B8941F] shadow-lg group-hover:shadow-xl transition-shadow duration-500">
               <div className="p-1 rounded-full bg-white">
-                <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full overflow-hidden ring-1 ring-[#2D5A27]/10">
+                <div className="w-32 h-32 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-full overflow-hidden ring-1 ring-[#2D5A27]/10 bg-neutral-100">
                   <img
                     src={item.imageUrl}
                     alt={item.title}
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80';
+                    }}
                     className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   />
                 </div>

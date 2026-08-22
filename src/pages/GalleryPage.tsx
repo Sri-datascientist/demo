@@ -68,7 +68,11 @@ export default function GalleryPage() {
                 src={item.imageUrl}
                 alt={item.title}
                 referrerPolicy="no-referrer"
-                className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80';
+                }}
+                className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500 bg-neutral-100"
               />
               <figcaption
                 className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#1a3d1a]/90 to-transparent p-4 pt-12"

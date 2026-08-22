@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingBag, Plus, Minus, Trash2, ArrowRight, Loader2 } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useToast } from '../contexts/ToastContext';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function CartPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const { items, total, loading, updateItem, removeItem } = useCart();
   const { showToast } = useToast();
   const [updatingId, setUpdatingId] = useState<number | null>(null);
@@ -35,6 +38,19 @@ export default function CartPage() {
     } finally {
       setUpdatingId(null);
     }
+  };
+
+  const handleProceedToCheckout = () => {
+    if (!user) {
+      showToast({
+        type: 'info',
+        title: 'Login Required',
+        message: 'Please login or create an account to place your order.',
+      });
+      navigate('/login', { state: { from: '/checkout' } });
+      return;
+    }
+    navigate('/checkout');
   };
 
   if (loading) {
@@ -84,9 +100,13 @@ export default function CartPage() {
                 >
                   <div className="flex items-center gap-4 flex-1">
                     <img
-                      src={item.product.image_url}
+                      src={item.product.image_url || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80'}
                       alt={item.product.name}
-                      className="w-20 h-20 rounded-xl object-cover border border-neutral-100"
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
+                      }}
+                      className="w-20 h-20 rounded-xl object-cover border border-neutral-100 bg-neutral-100"
                       referrerPolicy="no-referrer"
                     />
                     <div>
@@ -144,13 +164,14 @@ export default function CartPage() {
               <p className="text-sm text-neutral-500">Order Subtotal</p>
               <p className="text-2xl font-extrabold text-[#2D5A27]">₹{total.toFixed(2)}</p>
             </div>
-            <Link
-              to="/checkout"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#2D5A27] text-white px-9 py-4 font-bold text-base hover:bg-[#23471f] active:scale-95 transition-all shadow-lg"
+            <button
+              type="button"
+              onClick={handleProceedToCheckout}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-[#2D5A27] text-white px-9 py-4 font-bold text-base hover:bg-[#23471f] active:scale-95 transition-all shadow-lg cursor-pointer"
             >
               <span>Proceed to Checkout</span>
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </button>
           </div>
         </div>
       )}

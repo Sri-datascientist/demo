@@ -34,10 +34,10 @@ export default function ProductDetailPage() {
   const cartItem = product ? items.find((i) => i.product_id === product.id) : null;
 
   const handleAddToCart = async () => {
-    if (!product || !user) return;
+    if (!product) return;
     setLoadingCart(true);
     try {
-      await addItem(product.id, 1);
+      await addItem(product.id, 1, product);
       const newQty = (cartItem?.quantity || 0) + 1;
       showCartToast(product.name, newQty);
     } catch (err) {
@@ -78,11 +78,20 @@ export default function ProductDetailPage() {
   };
 
   const handleBuyNow = async () => {
-    if (!product || !user) return;
+    if (!product) return;
     setLoadingBuyNow(true);
     try {
       if (!cartItem) {
-        await addItem(product.id, 1);
+        await addItem(product.id, 1, product);
+      }
+      if (!user) {
+        showToast({
+          type: 'info',
+          title: 'Login Required',
+          message: 'Please login to complete your order.',
+        });
+        navigate('/login', { state: { from: '/checkout' } });
+        return;
       }
       await refresh();
       navigate('/checkout');
@@ -141,7 +150,15 @@ export default function ProductDetailPage() {
 
       <div className="grid lg:grid-cols-2 gap-10 bg-white p-6 md:p-8 rounded-3xl border border-neutral-100 shadow-sm">
         <div className="relative rounded-2xl overflow-hidden bg-neutral-100 aspect-square">
-          <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+          <img
+            src={product.image_url || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80'}
+            alt={product.name}
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
+            }}
+            className="w-full h-full object-cover"
+          />
           {cartItem && (
             <div className="absolute top-4 right-4 bg-[#2D5A27] text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-md">
               <Check className="w-4 h-4" />
@@ -195,16 +212,7 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="pt-6 border-t border-neutral-100">
-            {!user ? (
-              <Link
-                to="/login"
-                state={{ from: location.pathname }}
-                className="w-full block text-center rounded-full bg-[#2D5A27] text-white py-3.5 font-semibold hover:bg-[#23471f] active:scale-95 transition-all shadow-md"
-              >
-                Login to Buy
-              </Link>
-
-            ) : product.stock_quantity === 0 ? (
+            {product.stock_quantity === 0 ? (
               <button disabled className="w-full rounded-full bg-neutral-200 text-neutral-500 py-3.5 font-semibold cursor-not-allowed">
                 Out of Stock
               </button>

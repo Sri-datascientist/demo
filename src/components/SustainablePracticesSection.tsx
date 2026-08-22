@@ -57,6 +57,10 @@ function PracticeCard({ practice }: { practice: Practice }) {
         src={imageUrl}
         alt={title}
         referrerPolicy="no-referrer"
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80';
+        }}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
       />
       <div

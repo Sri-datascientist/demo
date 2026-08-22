@@ -95,6 +95,10 @@ export default function AboutUsPage() {
             <img
               src={dkJainImage}
               alt="OyeDesi Team"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80';
+              }}
               className="w-full h-full object-cover object-top"
             />
           </div>

@@ -124,6 +124,9 @@ const valueChain = [
   },
 ];
 
+const DEFAULT_PRODUCT_IMAGE =
+  'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80';
+
 export default function ProductsPage() {
   const location = useLocation();
   const { user } = useAuth();
@@ -177,19 +180,9 @@ export default function ProductsPage() {
   }, [products, productTypeTab]);
 
   const handleAddToCart = async (product: Product) => {
-    if (!user) {
-      showToast({
-        type: 'info',
-        title: 'Login Required',
-        message: 'Please login to add items to your cart.',
-        action: { label: 'Go to Login', to: '/login' },
-      });
-      return;
-    }
-
     setActionLoading((prev) => ({ ...prev, [product.id]: true }));
     try {
-      await addItem(product.id, 1);
+      await addItem(product.id, 1, product);
       const currentCartItem = items.find((i) => i.product_id === product.id);
       const newQty = (currentCartItem?.quantity || 0) + 1;
       showCartToast(product.name, newQty);
@@ -332,9 +325,13 @@ export default function ProductsPage() {
                   <div>
                     <div className="aspect-[4/3] overflow-hidden relative bg-neutral-100">
                       <img
-                        src={product.image_url}
+                        src={product.image_url || DEFAULT_PRODUCT_IMAGE}
                         alt={product.name}
                         referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
+                        }}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                       {cartItem && (
@@ -373,16 +370,7 @@ export default function ProductsPage() {
                       </p>
                     </div>
 
-                    {!user ? (
-                      <Link
-                        to="/login"
-                        state={{ from: location.pathname + location.search }}
-                        className="w-full block text-center rounded-full border-2 border-[#2D5A27] text-[#2D5A27] py-2.5 font-semibold hover:bg-[#2D5A27] hover:text-white transition-all active:scale-95"
-                      >
-                        Login to Buy
-                      </Link>
-
-                    ) : product.stock_quantity === 0 ? (
+                    {product.stock_quantity === 0 ? (
                       <button
                         disabled
                         className="w-full rounded-full bg-neutral-200 text-neutral-500 py-3 font-semibold cursor-not-allowed text-center"
@@ -451,11 +439,15 @@ export default function ProductsPage() {
                 idx % 2 === 1 ? 'md:flex-row-reverse' : ''
               }`}
             >
-              <div className="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-md aspect-[16/10]">
+              <div className="w-full md:w-1/2 rounded-2xl overflow-hidden shadow-md aspect-[16/10] bg-neutral-100">
                 <img
                   src={step.imageUrl}
                   alt={step.title}
                   referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = DEFAULT_PRODUCT_IMAGE;
+                  }}
                   className="w-full h-full object-cover"
                 />
               </div>

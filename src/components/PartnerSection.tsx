@@ -85,6 +85,10 @@ export function PartnerSection() {
                 src={spawn.src}
                 alt="thumbnail particle"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=400&q=80';
+                }}
                 className="w-full h-full object-cover"
               />
             </div>
